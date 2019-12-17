@@ -55,9 +55,33 @@ class MessageThread: Codable, Equatable {
             self.timestamp = timestamp
             self.messageId = messageId
             self.senderID = sender.senderId
-            
         }
         
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let text = try container.decode(String.self, forKey: .text)
+            let displayName = try container.decode(String.self, forKey: .displayName)
+            let timestamp = try container.decode(Date.self, forKey: .timestamp)
+            var senderId: String = UUID().uuidString
+            if let decodedSenderId = try? container.decode(String.self, forKey: .senderID) {
+                senderId = decodedSenderId
+            }
+            let sender = Sender(senderId: senderId, displayName: displayName)
+            self.init(text: text, sender: sender, timestamp: timestamp)
+        }
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(displayName, forKey: .displayName)
+            try container.encode(senderId, forKey: .senderID)
+            try container.encode(timestamp, forKey: .timestamp)
+            try container.encode(text, forKey: .text)
+        }
+        enum CodingKeys: String, CodingKey {
+            case displayName
+            case senderID
+            case text
+            case timestamp
+        }
     }
     
     static func ==(lhs: MessageThread, rhs: MessageThread) -> Bool {
