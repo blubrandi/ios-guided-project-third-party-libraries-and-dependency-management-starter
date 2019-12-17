@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MessageKit
 
 class MessageThread: Codable, Equatable {
     
@@ -36,7 +37,12 @@ class MessageThread: Codable, Equatable {
     }
     
     
-    struct Message: Codable, Equatable {
+    struct Message: Codable, Equatable, MessageType {
+        var sender: SenderType
+        var messageId: String
+        var sentDate: Date
+        var kind: MessageKind
+        
         
         let text: String
         let timestamp: Date
