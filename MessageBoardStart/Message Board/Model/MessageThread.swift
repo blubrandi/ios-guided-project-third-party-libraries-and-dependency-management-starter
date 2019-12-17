@@ -78,7 +78,7 @@ class MessageThread: Codable, Equatable {
         }
         enum CodingKeys: String, CodingKey {
             case displayName
-            case senderID
+            case senderId
             case text
             case timestamp
         }
