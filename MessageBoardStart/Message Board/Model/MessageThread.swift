@@ -49,7 +49,7 @@ class MessageThread: Codable, Equatable {
         var sender: SenderType { return Sender(id: senderID, displayName: displayName)}
         var senderID: String
         
-        init(text: String, timestamp: Date = Date(), messageId: String = UUID().uuidString) {
+        init(text: String, sender: Sender, timestamp: Date = Date(), messageId: String = UUID().uuidString) {
             self.text = text
             self.displayName = sender.displayName
             self.timestamp = timestamp
@@ -57,6 +57,7 @@ class MessageThread: Codable, Equatable {
             self.senderID = sender.senderId
             
         }
+        
     }
     
     static func ==(lhs: MessageThread, rhs: MessageThread) -> Bool {
