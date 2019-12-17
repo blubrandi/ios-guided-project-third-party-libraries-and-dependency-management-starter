@@ -38,20 +38,23 @@ class MessageThread: Codable, Equatable {
     
     
     struct Message: Codable, Equatable, MessageType {
-        var sender: SenderType
-        var messageId: String
-        var sentDate: Date
-        var kind: MessageKind
-        
         
         let text: String
         let timestamp: Date
         let displayName: String
         
-        init(text: String, displayName: String, timestamp: Date = Date()) {
+        var messageId: String
+        var sentDate: Date { return timestamp}
+        var kind: MessageKind { return .text(text) }
+        var sender: SenderType { return Sender(id: senderID, displayName: displayName)}
+        var senderID: String
+        
+        init(text: String, timestamp: Date = Date(), messageId: String = UUID().uuidString) {
             self.text = text
-            self.displayName = displayName
+            self.displayName = sender.displayName
             self.timestamp = timestamp
+            self.messageId = messageId
+            self.senderID = sender.senderId
             
         }
     }
